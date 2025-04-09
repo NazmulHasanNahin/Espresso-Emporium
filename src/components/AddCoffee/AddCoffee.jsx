@@ -1,3 +1,5 @@
+import { ToastContainer, toast,Bounce } from 'react-toastify';
+
 const AddCoffee = () => {
     const handleAddCoffee = event => {
         event.preventDefault();
@@ -13,6 +15,30 @@ const AddCoffee = () => {
 
         const newCoffee = { name, chef, supplier, taste, category, photourl, details };
         console.log(newCoffee);
+
+        fetch("http://localhost:5000/coffee", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    toast.success("Coffee added successfully! ☕");
+                }
+                else{
+                    toast.error("Failed to add coffee. ❌");
+                }
+            })
+            .catch(error => {
+                toast.error("Something went wrong!");
+                console.error(error);
+              });
+
+
+
     }
     return (
         <div className="max-w-4xl mx-auto my-20 px-6">
@@ -99,8 +125,20 @@ const AddCoffee = () => {
                     </div>
                 </form>
 
-
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
         </div>
     );
 };
