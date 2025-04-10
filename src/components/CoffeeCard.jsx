@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee , setCoffees, coffees }) => {
   const { _id, name, chef, supplier, taste, category, photourl, details } = coffee;
 
   const handleConfirmDelete = (_id) => {
@@ -28,6 +28,9 @@ const CoffeeCard = ({ coffee }) => {
                     toast.success("Deleted successfully!", {
                       position: "top-center",
                     });
+                    const remaining = coffees.filter(cof => cof._id !== _id);         
+                    setCoffees(remaining);
+                   
                   })
               }}
               className="px-3 py-1 bg-red-500 text-white text-sm rounded-md hover:bg-red-600"

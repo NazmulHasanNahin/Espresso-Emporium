@@ -18,23 +18,24 @@ const UpdateCoffee = () => {
         const photourl = form.photourl.value;
         const details = form.details.value;
 
-        const newCoffee = { name, chef, supplier, taste, category, photourl, details };
-        console.log(newCoffee);
+        const updateCoffee = { name, chef, supplier, taste, category, photourl, details };
+        console.log(updateCoffee);
 
-        fetch("http://localhost:5000/coffee", {
-            method: "POST",
+        fetch(`http://localhost:5000/coffee/${_id}`, {
+            method: "PUT",
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(updateCoffee)
         })
             .then(res => res.json())
             .then(data => {
-                if (data) {
-                    toast.success("Coffee added successfully! ☕");
+                console.log(data);
+                if (data.modifiedCount > 0) {
+                    toast.success("Coffee updated successfully! ☕");
                 }
                 else{
-                    toast.error("Failed to add coffee. ❌");
+                    toast.error("Failed to update coffee. ❌");
                 }
             })
             .catch(error => {
@@ -48,7 +49,7 @@ const UpdateCoffee = () => {
            <h1>update coffee page</h1>
            <div className="max-w-4xl mx-auto my-20 px-6">
             <div className="bg-white shadow-xl rounded-2xl p-10 border border-gray-200">
-                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">☕ Add New Coffee</h1>
+                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">☕ Update Coffee</h1>
                 <form onSubmit={handleupdateCoffee} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Name */}
                     <div>
@@ -74,9 +75,10 @@ const UpdateCoffee = () => {
                     </div>
                     {/* Supplier */}
                     <div>
-                    defaultValue={supplier}
+                    
                         <label className="block text-sm font-semibold text-gray-600 mb-2">Supplier</label>
                         <input
+                        defaultValue={supplier}
                             name="supplier"
                             type="text"
                             placeholder="Enter supplier name"
